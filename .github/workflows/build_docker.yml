@@ -26,7 +26,17 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: joesiltberg/gha_test
+          
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Docker Build
         run: |
           docker build -t joesiltberg/gha_docker_test -f Dockerfile.windows .
+
+      - name: Docker Push
+        run: |
+          docker push joesiltberg/gha_docker_test
